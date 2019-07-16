@@ -1,0 +1,53 @@
+.banner{
+    display: flex;
+    justify-content: center;
+}
+.banner a{
+    position: relative;  
+    max-width:1200px;
+
+}
+.img{
+    width: 1200px;
+    height: 380px;  
+    position: absolute;  
+}
+
+.btn{    
+    background-color: black;
+    color:white;
+    text-align: center;
+    font-size:16px; 
+    align-self: flex-end; 
+    justify-content: flex-end; 
+    margin-left: -50px;
+    z-index:10;
+    /*position: absolute; */
+}
+.slideUp{
+    overflow: hidden;
+    width: 1200px;
+    height: 80px;    
+    transition: height 2s;        
+}
+.slideDown{
+    width: 1200px;
+    height: 380px;    
+    transition: height 2s;    
+}
+
+/*
+.autoSlideinit{
+    width: 1200px;
+    height: 80px; 
+    transition: height 3s;     
+}
+.autoSlide{
+    height: 380px;    
+    transition: height 3s;    
+}
+
+.autoSlideNum{
+    transition-delay: 2s;
+}
+*/
