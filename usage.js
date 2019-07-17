@@ -7,6 +7,7 @@
 			this.ele = ele;
 			this.$ele = $(ele);
 			this.option = options;
+			// this.btn = '<button class="btn">收合</button>'; // var btn = '<button class="btn">收合</button>'
 		};
 		
 		Module.DEFAULT = {
@@ -33,12 +34,14 @@
 
 		// 設定一開始是否為開或合
 		Module.prototype.init = function () {
-			console.log(this);	
+			//console.log(this);	
+
+			// this.$ele.find('.wrap').append(this.btn);
 			 if(this.option.openAtStart==true){							 
 				$(".wrap").addClass( "slideDown" );
 				if(this.option.autoToggle==true){
-					console.log(this);
-					console.log(this.option.autoToggle);
+					//console.log(this);
+					//console.log(this.option.autoToggle);
 					//testing
 					var slide = setInterval(function(){ autoSlide() }, 1000);
  
@@ -57,7 +60,6 @@
 						console.log('2');
 					}
 					//transitionend事件
-
 					clearInterval(slide);
 				}	
 			 }else{
@@ -70,48 +72,65 @@
 		// Module.prototype.auto = function () {
 		// 	console.log(this);
 		// 	console.log(this.option.autoToggle);			
-		// 	// if(this.option.autoToggle==true){	
-		// 	// 	   $(".wrap").addClass( "slideUp" );
-		// 	// }
-		// 	//if(typeof(this.option.autoToggle)==number){
-		// 		//
-		// 	//}
-		// };
+		// 	if(this.option.autoToggle==true){	
+		// 	 	   $(".wrap").addClass( "slideUp" );
+		// 	}
+		// 	if(typeof(this.option.autoToggle)==number){
+		// 		
+		// 	}
+		// };		
 	
 		// 設定收合展開按鈕
 		Module.prototype.btn = function () {
-			console.log(Module.btn);
 			console.log(this);	
-			var btntext = this;
+			var btntext = this.option.button;
+			var _banner = this;
 			console.log(btntext);
 			$(".btn").on("click",function(e){
-				if(e.target.textContent==btntext.option.button.closeText){					
-					console.log(btntext.option.button.closeText);
-					console.log(this);
-					$(".wrap").removeClass( "slideDown" );
-					$(".wrap").toggleClass( "slideUp" );
-					$(".img").css("top","-300px");
-					e.target.textContent=btntext.option.button.openText;										
+				if(this.textContent==btntext.closeText){									
+					// console.log(btntext.option.button.closeText);
+					// console.log(this);
+					// $(".wrap").removeClass( "slideDown" );
+					// $(".wrap").toggleClass( "slideUp" );
+					// $(".img").css("top","-300px");
+					// //e.target.textContent=btntext.option.button.openText;	
+					// this.textContent=btntext.option.button.openText;
+					_banner.close();
 				}else{
-					$(".wrap").removeClass( "slideUp" );
-					$(".wrap").toggleClass( "slideDown" );
-					$(".img").css("top","0");
-					e.target.textContent=btntext.option.button.closeText;										
+					// $(".wrap").removeClass( "slideUp" );
+					// $(".wrap").toggleClass( "slideDown" );
+					// $(".img").css("top","0");
+					// e.target.textContent=btntext.option.button.closeText;
+					_banner.open();										
 				}	
 			});
-				
 		};
-		Module.prototype.open = function (){
-			console.log(this);	
+       
+		Module.prototype.open = function (){				
+			$(".wrap").removeClass( "slideUp" );
+			$(".wrap").toggleClass( "slideDown" );
+			$(".img").css("top","0");
+			console.log('this_open',this);
+			// e.target.textContent=btntext.closeText;
+			this.$ele.find('.btn').text(this.option.button.closeText);
 		}
 
 		Module.prototype.close = function (){
-
+			$(".wrap").removeClass( "slideDown" );
+			$(".wrap").toggleClass( "slideUp" );
+			$(".img").css("top","-300px");
+			console.log('this_close',this);
+			//e.target.textContent=btntext.option.button.openText;	
+			this.$ele.find('.btn').text(this.option.button.openText);
 		}
 
 		Module.prototype.toggle = function (){
-
+		
 		}
+
+		Module.prototype.class = function () {
+			
+		};
 
 		Module.prototype.func1 = function (option) {
 			console.log('this is a prototype function1!!!');
@@ -141,6 +160,9 @@
 					//console.log("module opts",options)
 					//module.auto();
 					module.btn();
+					// this.$ele.on('click', () => {
+						
+					// })
 								
 				}
 			});
