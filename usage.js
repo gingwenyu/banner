@@ -10,7 +10,21 @@
 		};
 		
 		Module.DEFAULT = {
-			style: 'classname',
+			style: 'classname',			
+			openAtStart: true, // [boolean] true | false			
+			autoToggle: true, // [boolean|number] true | false | 3000
+			button: { 
+				closeText: '收合', // [string]
+				openText: '展開', // [string]
+				class: 'btn' // [string]
+			},
+			class: {
+				closed: 'closed', // [string]
+				closing: 'closing', // [string]
+				opened: 'opened', // [string]
+				opening: 'opening' // [string]
+			},
+			transition: true,			
 			whenClickCallback: function() {
 				console.log('whenClickCallback');
 			}
@@ -19,44 +33,85 @@
 
 		// 設定一開始是否為開或合
 		Module.prototype.init = function () {
-			console.log('this',this);	
-			 if(this.option.openAtStart==true){	
-			 	$(".wrap").slideDown();
+			console.log(this);	
+			 if(this.option.openAtStart==true){							 
+				$(".wrap").addClass( "slideDown" );
+				if(this.option.autoToggle==true){
+					console.log(this);
+					console.log(this.option.autoToggle);
+					//testing
+					var slide = setInterval(function(){ autoSlide() }, 1000);
+ 
+					function autoSlide() {
+						$(".wrap").removeClass( "slideDown" );
+						$(".wrap").toggleClass( "slideUp" );  //1
+						console.log('1');
+						$(".img").css("top","-300px");
+						$(".btn").text("展開");
+						//console.log(this.option.button.openText);
+						$(".wrap").toggleClass( "slideUp" );
+						$(".img").css("top","0");
+						$(".btn").text("收合");
+						//console.log(this.option.button.closeText);				
+						$(".wrap").toggleClass( "slideDown" );  //2	
+						console.log('2');
+					}
+					//transitionend事件
+
+					clearInterval(slide);
+				}	
 			 }else{
-			 	$(".wrap").toggleClass( "slideUp" );	
+			 	$(".wrap").addClass( "slideUp" );	
 			 }
             
 		};
 		
 		//設定啟動後是否要自動開或合
-		Module.prototype.auto = function () {
-			console.log(this);
-			console.log(typeof(this.option.autoToggle));			
-			if(this.option.autoToggle==true){	
-				//testing
-				$(".wrap").toggleClass( "slideUp" ).toggleClass( "slideDown" ).toggleClass( "slideUp" );	 
-				
-			}
-			//if(typeof(Module.auto.autoToggle)==number){
-				//
-			//}
-		};
+		// Module.prototype.auto = function () {
+		// 	console.log(this);
+		// 	console.log(this.option.autoToggle);			
+		// 	// if(this.option.autoToggle==true){	
+		// 	// 	   $(".wrap").addClass( "slideUp" );
+		// 	// }
+		// 	//if(typeof(this.option.autoToggle)==number){
+		// 		//
+		// 	//}
+		// };
 	
 		// 設定收合展開按鈕
 		Module.prototype.btn = function () {
 			console.log(Module.btn);
-			console.log(this);			
+			console.log(this);	
+			var btntext = this;
+			console.log(btntext);
 			$(".btn").on("click",function(e){
-				if(e.target.textContent=='收合'){
-					$(".wrap").toggleClass( "slideUp" );						
-					e.target.textContent='展開';										
+				if(e.target.textContent==btntext.option.button.closeText){					
+					console.log(btntext.option.button.closeText);
+					console.log(this);
+					$(".wrap").removeClass( "slideDown" );
+					$(".wrap").toggleClass( "slideUp" );
+					$(".img").css("top","-300px");
+					e.target.textContent=btntext.option.button.openText;										
 				}else{
+					$(".wrap").removeClass( "slideUp" );
 					$(".wrap").toggleClass( "slideDown" );
-					e.target.textContent='收合';										
+					$(".img").css("top","0");
+					e.target.textContent=btntext.option.button.closeText;										
 				}	
 			});
 				
 		};
+		Module.prototype.open = function (){
+			console.log(this);	
+		}
+
+		Module.prototype.close = function (){
+
+		}
+
+		Module.prototype.toggle = function (){
+
+		}
 
 		Module.prototype.func1 = function (option) {
 			console.log('this is a prototype function1!!!');
@@ -84,8 +139,9 @@
 					// Do something to each element here.					
 					module.init();		
 					//console.log("module opts",options)
-					module.auto();
-					module.btn();			
+					//module.auto();
+					module.btn();
+								
 				}
 			});
 		};
@@ -102,7 +158,12 @@
 
 
 //使用 clearInterval() 来停止 setInterval 的执行：
-/*
+/*1.
+var timeoutID = window.setInterval(( () => console.log("Hello!") ), 1000);
+window.clearInterval(timeoutID);
+*/ 
+
+/*2.
 var myVar = setInterval(function(){ myTimer() }, 1000);
  
 function myTimer() {

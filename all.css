@@ -1,28 +1,35 @@
 .banner{
     display: flex;
     justify-content: center;
+    position: relative;  /*testing*/
+    top:0;
+    left:auto;
+    right:auto; 
 }
 .banner a{
-    position: relative;  
+    position: absolute;  /*testing*/
+    top:0;
+    left:auto;
+    right:auto; 
     max-width:1200px;
-
 }
 .img{
     width: 1200px;
     height: 380px;  
-    position: absolute;  
+    position: relative;  /*testing*/ 
+    /*top:-300px;*/
+    left:auto;
+    right:auto; 
 }
-
 .btn{    
     background-color: black;
     color:white;
     text-align: center;
-    font-size:16px; 
-    align-self: flex-end; 
-    justify-content: flex-end; 
-    margin-left: -50px;
+    font-size:16px;
     z-index:10;
-    /*position: absolute; */
+    position: absolute;  
+    right:0;
+    bottom: 0;
 }
 .slideUp{
     overflow: hidden;
@@ -35,19 +42,3 @@
     height: 380px;    
     transition: height 2s;    
 }
-
-/*
-.autoSlideinit{
-    width: 1200px;
-    height: 80px; 
-    transition: height 3s;     
-}
-.autoSlide{
-    height: 380px;    
-    transition: height 3s;    
-}
-
-.autoSlideNum{
-    transition-delay: 2s;
-}
-*/
