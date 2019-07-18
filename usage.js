@@ -7,6 +7,8 @@
 			this.ele = ele;
 			this.$ele = $(ele);
 			this.option = options;
+			//this.$img = this.$ele.find(".img");
+			this.$btn = this.$ele.find(".btn");
 			// this.btn = '<button class="btn">收合</button>'; // var btn = '<button class="btn">收合</button>'
 		};
 		
@@ -33,52 +35,76 @@
 		};
 
 		// 設定一開始是否為開或合
-		Module.prototype.init = function () {
-			//console.log(this);	
+		Module.prototype.init = function () {			
+			console.log("this.option.openAtStart",this.option.openAtStart);				
+			console.log(this);
+			var vm=this;
 
-			// this.$ele.find('.wrap').append(this.btn);
-			 if(this.option.openAtStart==true){							 
-				$(".wrap").addClass( "slideDown" );
-				if(this.option.autoToggle==true){
-					//console.log(this);
-					//console.log(this.option.autoToggle);
-					//testing
-					var slide = setInterval(function(){ autoSlide() }, 1000);
- 
-					function autoSlide() {
-						$(".wrap").removeClass( "slideDown" );
-						$(".wrap").toggleClass( "slideUp" );  //1
-						console.log('1');
-						$(".img").css("top","-300px");
-						$(".btn").text("展開");
-						//console.log(this.option.button.openText);
-						$(".wrap").toggleClass( "slideUp" );
-						$(".img").css("top","0");
-						$(".btn").text("收合");
-						//console.log(this.option.button.closeText);				
-						$(".wrap").toggleClass( "slideDown" );  //2	
-						console.log('2');
-					}
-					//transitionend事件
-					clearInterval(slide);
+			function autoSlide() {
+				$(".wrap").toggleClass("opened");
+				$(".wrap").toggleClass("closed");
+				toggleTxt();
+			}	
+			function autoSlideUD() {
+				$(".wrap").toggleClass("closed");
+				$(".wrap").toggleClass("opened");
+				toggleTxt();
+			}
+			
+			//openAtStart & autoToggle  
+			var open=this.option.openAtStart;
+			console.log('openAtStart',open);
+			
+			 if(typeof(open)=="boolean"&&open==true){	
+				$(".wrap").addClass( "opened" ); 
+				var atToggle = this.option.autoToggle;
+				console.log('autoToggle',atToggle);
+
+				if(typeof(atToggle)=="boolean"&&atToggle==true){					
+					setTimeout(autoSlide, 1000);	
+				}else if(typeof(atToggle)=="boolean"&&atToggle==false){
+					console.log('atToggle false，沒有自動開合');
+				}else if(typeof(atToggle)=="number"){
+					setTimeout(autoSlide, this.option.autoToggle);					
 				}	
-			 }else{
-			 	$(".wrap").addClass( "slideUp" );	
+			 }else if(typeof(open)=="boolean"&&open==false){
+				 $(".wrap").addClass( "closed" );
+				 this.$btn[0].textContent=this.option.button.openText;
+				 if(typeof(this.option.autoToggle)=="boolean"&&this.option.autoToggle==true){
+					setTimeout(autoSlideUD, 1000);					
+				 }else if(typeof(this.option.autoToggle)=="boolean"&&this.option.autoToggle==false){
+					console.log('atToggle false，沒有自動開合');			
+				 }else if(typeof(this.option.autoToggle)=="number"){
+					setTimeout(autoSlideUD, this.option.autoToggle);		
+				 }	
 			 }
-            
+
+			// toggle text
+			function toggleTxt(){
+				console.log(vm);
+				var txt=document.getElementsByTagName('a');
+				if(txt[0].classList[1]=="closed"){					
+					console.log('btntxt',vm.$btn[0].textContent,'changeTo',vm.option.button.openText);									
+					vm.$btn[0].textContent=vm.option.button.openText;
+				}else if(txt[0].classList[1]=="opened"){
+					console.log('btntxt',vm.$btn[0].textContent,'changeTo',vm.option.button.openText);
+					vm.$btn[0].textContent=vm.option.button.closeText;
+				}
+			}
+			
+			//  //classStatus
+			//  console.log(this,this.option.class);
+			//  if(this.option.class.closed){
+			// 	this.close();		
+			//  }else if(this.option.class.opened){
+			// 	this.open();			 
+			//  }
+
+
+			 this.btn();			 
+			 //this.toggle();
+
 		};
-		
-		//設定啟動後是否要自動開或合
-		// Module.prototype.auto = function () {
-		// 	console.log(this);
-		// 	console.log(this.option.autoToggle);			
-		// 	if(this.option.autoToggle==true){	
-		// 	 	   $(".wrap").addClass( "slideUp" );
-		// 	}
-		// 	if(typeof(this.option.autoToggle)==number){
-		// 		
-		// 	}
-		// };		
 	
 		// 設定收合展開按鈕
 		Module.prototype.btn = function () {
@@ -86,38 +112,44 @@
 			var btntext = this.option.button;
 			var _banner = this;
 			console.log(btntext);
-			$(".btn").on("click",function(e){
+			$(this.$btn).on("click",function(e){
+				console.log("this.textContent",this.textContent)
+				console.log(this.textContent==btntext.closeText)
 				if(this.textContent==btntext.closeText){									
 					// console.log(btntext.option.button.closeText);
 					// console.log(this);
-					// $(".wrap").removeClass( "slideDown" );
-					// $(".wrap").toggleClass( "slideUp" );
+					// $(".wrap").removeClass( "opened" );
+					// $(".wrap").toggleClass( "closed" );
 					// $(".img").css("top","-300px");
 					// //e.target.textContent=btntext.option.button.openText;	
 					// this.textContent=btntext.option.button.openText;
 					_banner.close();
 				}else{
-					// $(".wrap").removeClass( "slideUp" );
-					// $(".wrap").toggleClass( "slideDown" );
+					// $(".wrap").removeClass( "closed" );
+					// $(".wrap").toggleClass( "opened" );
 					// $(".img").css("top","0");
 					// e.target.textContent=btntext.option.button.closeText;
 					_banner.open();										
 				}	
 			});
 		};
-       
+        
 		Module.prototype.open = function (){				
-			$(".wrap").removeClass( "slideUp" );
-			$(".wrap").toggleClass( "slideDown" );
+			$(".wrap").removeClass( "closed" );
+			$(".wrap").addClass( "opened" );
+			//$(".wrap").addClass( "opening" );
 			$(".img").css("top","0");
 			console.log('this_open',this);
+			$(".wrap").on("transtionend",function(){
+				$(".wrap").removeClass("opening").addClass("opened")
+			})
 			// e.target.textContent=btntext.closeText;
 			this.$ele.find('.btn').text(this.option.button.closeText);
 		}
 
 		Module.prototype.close = function (){
-			$(".wrap").removeClass( "slideDown" );
-			$(".wrap").toggleClass( "slideUp" );
+			$(".wrap").removeClass( "opened" );
+			$(".wrap").addClass( "closed" );
 			$(".img").css("top","-300px");
 			console.log('this_close',this);
 			//e.target.textContent=btntext.option.button.openText;	
@@ -125,19 +157,28 @@
 		}
 
 		Module.prototype.toggle = function (){
-		
+			var el=document.getElementsByTagName('a');
+			console.log(el[0].classList[1]);
+			if(el[0].classList[1]=="closed"){
+				$(".wrap").removeClass( "closed" );
+				$(".wrap").toggleClass( "opened" );	
+			}else if(el[0].classList[1]=="opened"){
+				$(".wrap").removeClass( "opened" );
+				$(".wrap").toggleClass( "closed" );		
+			}
+			console.log('toggle done');
 		}
 
-		Module.prototype.class = function () {
-			
-		};
+		// Module.prototype.func1 = function (option) {
+		// 	console.log('this is a prototype function1!!!');
+		// 	console.log(option);
+		// };
 
-		Module.prototype.func1 = function (option) {
-			console.log('this is a prototype function1!!!');
-			console.log(option);
-		};
-	
-		$.fn[ModuleName] = function ( methods, options ) {
+		// function classStatus(){
+		// 	console.log('this',this);		
+		// }
+			
+		$.fn[ModuleName] = function (options ) {
 			return this.each(function(){
 				var $this = $(this);
 				var module = $this.data( ModuleName );
@@ -152,61 +193,14 @@
 						throw 'unsupported options!';
 					}
 				} else {
-					opts = $.extend( {}, Module.DEFAULTS, ( typeof methods === 'object' && methods ), ( typeof options === 'object' && options ) );
+					opts = $.extend( {}, Module.DEFAULTS, ( typeof options === 'object' && options ) );
 					module = new Module(this, opts);
 					$this.data( ModuleName, module );					
 					// Do something to each element here.					
 					module.init();		
 					//console.log("module opts",options)
-					//module.auto();
-					module.btn();
-					// this.$ele.on('click', () => {
-						
-					// })
-								
 				}
 			});
 		};
 	
 	})(jQuery);
-
-
-
-
-
-
-
-
-
-
-//使用 clearInterval() 来停止 setInterval 的执行：
-/*1.
-var timeoutID = window.setInterval(( () => console.log("Hello!") ), 1000);
-window.clearInterval(timeoutID);
-*/ 
-
-/*2.
-var myVar = setInterval(function(){ myTimer() }, 1000);
- 
-function myTimer() {
-    var d = new Date();
-    var t = d.toLocaleTimeString();
-    document.getElementById("demo").innerHTML = t;
-}
- 
-function myStopFunction() {
-    clearInterval(myVar);
-}
-
-*/
-
-
-//在指定的元素上监听transitionend事件, 例如#slidingMenu， 然后指定一个函数, 例如 showMessage()
-/*
-function showMessage() {
-    console.log('Transition 已完成');
-}
-
-var element = document.getElementById("slidingMenu");
-element.addEventListener("transitionend", showMessage, false);
-*/
