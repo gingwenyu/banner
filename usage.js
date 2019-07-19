@@ -36,8 +36,8 @@
 
 		// 設定一開始是否為開或合
 		Module.prototype.init = function () {			
-			console.log("this.option.openAtStart",this.option.openAtStart);				
-			console.log(this);
+			//console.log("this.option.openAtStart",this.option.openAtStart);				
+			//console.log(this);
 			var vm=this;
 
 			function autoSlide() {
@@ -54,8 +54,11 @@
 			//openAtStart & autoToggle  
 			var open=this.option.openAtStart;
 			console.log('openAtStart',open);
+			var classN=document.getElementsByTagName('a');			
+			var clStr=classN[0].classList[1];			
 			
 			 if(typeof(open)=="boolean"&&open==true){	
+				$(".wrap").removeClass( clStr );
 				$(".wrap").addClass( "opened" ); 
 				var atToggle = this.option.autoToggle;
 				console.log('autoToggle',atToggle);
@@ -68,6 +71,7 @@
 					setTimeout(autoSlide, this.option.autoToggle);					
 				}	
 			 }else if(typeof(open)=="boolean"&&open==false){
+				 $(".wrap").removeClass( clStr );
 				 $(".wrap").addClass( "closed" );
 				 this.$btn[0].textContent=this.option.button.openText;
 				 if(typeof(this.option.autoToggle)=="boolean"&&this.option.autoToggle==true){
@@ -87,31 +91,21 @@
 					console.log('btntxt',vm.$btn[0].textContent,'changeTo',vm.option.button.openText);									
 					vm.$btn[0].textContent=vm.option.button.openText;
 				}else if(txt[0].classList[1]=="opened"){
-					console.log('btntxt',vm.$btn[0].textContent,'changeTo',vm.option.button.openText);
+					console.log('btntxt',vm.$btn[0].textContent,'changeTo',vm.option.button.closeText);
 					vm.$btn[0].textContent=vm.option.button.closeText;
 				}
 			}
 			
-			//  //classStatus
-			//  console.log(this,this.option.class);
-			//  if(this.option.class.closed){
-			// 	this.close();		
-			//  }else if(this.option.class.opened){
-			// 	this.open();			 
-			//  }
-
-
 			 this.btn();			 
 			 //this.toggle();
-
 		};
 	
 		// 設定收合展開按鈕
 		Module.prototype.btn = function () {
-			console.log(this);	
+			//console.log(this);	
 			var btntext = this.option.button;
 			var _banner = this;
-			console.log(btntext);
+			//console.log(btntext);
 			$(this.$btn).on("click",function(e){
 				console.log("this.textContent",this.textContent)
 				console.log(this.textContent==btntext.closeText)
@@ -134,26 +128,97 @@
 			});
 		};
         
-		Module.prototype.open = function (){				
-			$(".wrap").removeClass( "closed" );
-			$(".wrap").addClass( "opened" );
-			//$(".wrap").addClass( "opening" );
-			$(".img").css("top","0");
+		Module.prototype.open = function (){
+			var str=document.getElementsByTagName('a');			
+			var classStr=str[0].classList[1];
+			var vm=this;
+			console.log(classStr,vm);
+			//btn start
+			$(".wrap").removeClass( classStr );
+			$(".wrap").addClass( "opened" );			
 			console.log('this_open',this);
-			$(".wrap").on("transtionend",function(){
-				$(".wrap").removeClass("opening").addClass("opened")
-			})
-			// e.target.textContent=btntext.closeText;
 			this.$ele.find('.btn').text(this.option.button.closeText);
+			//btn end
+				if(this.option.openAtStart==true&&classStr=='opened'&&this.option.transition==true){
+					$(".wrap").removeClass( classStr );
+					$(".wrap").addClass( "closing" );
+					$(".wrap").on("transitionend",function(){
+						$(".wrap").removeClass("closing").addClass("closed");						
+						console.log('closing transitionend ');
+						vm.option.whenTransition();
+					})
+					this.$ele.find('.btn').text(this.option.button.openText);
+
+				}else if(this.option.openAtStart==false&&classStr=='closed'&&this.option.transition==true){
+					$(".wrap").removeClass( classStr );
+					$(".wrap").addClass( "opening" );
+					$(".wrap").on("transitionend",function(){
+						$(".wrap").removeClass("opening").addClass("opened");
+						console.log('opening transitionend ');
+						vm.option.whenTransition();
+					})
+					this.$ele.find('.btn').text(this.option.button.closeText);
+				}
+
+			// //testing
+			// var str=document.getElementsByTagName('a');			
+			// var classStr=str[0].classList[1];
+			// console.log(classStr);
+			// $(".wrap").removeClass( classStr );
+			// $(".wrap").addClass( "opening" );
+			// console.log('this_open',this);
+			// $(".wrap").on("transitionend",function(){			
+			// 	$(".wrap").removeClass("opening").addClass("opened");
+			// 	console.log('opening transitionend ');
+			// })
+			// this.$ele.find('.btn').text(this.option.button.closeText);
+
+			// // origin
+			// $(".wrap").removeClass( "closed" );
+			// //$(".wrap").addClass( "opened" );
+			// $(".img").css("top","0");
+			// console.log('this_open',this);			
+			// this.$ele.find('.btn').text(this.option.button.closeText);
 		}
 
 		Module.prototype.close = function (){
-			$(".wrap").removeClass( "opened" );
+			var str2=document.getElementsByTagName('a');			
+			var classStr2=str2[0].classList[1];
+			console.log(classStr2);
+			//btn start
+			$(".wrap").removeClass( classStr2 );
 			$(".wrap").addClass( "closed" );
-			$(".img").css("top","-300px");
 			console.log('this_close',this);
-			//e.target.textContent=btntext.option.button.openText;	
 			this.$ele.find('.btn').text(this.option.button.openText);
+			//btn end
+
+			if(this.option.openAtStart==true&&classStr=='opened'&&this.option.transition==true){
+				$(".wrap").removeClass( classStr );
+				$(".wrap").addClass( "closing" );
+				$(".wrap").on("transitionend",function(){
+					$(".wrap").removeClass("closing").addClass("closed");						
+					console.log('closing transitionend ');
+					vm.option.whenTransition();
+				})
+				this.$ele.find('.btn').text(this.option.button.openText);
+
+			}else if(this.option.openAtStart==false&&classStr2=='closed'&&this.option.transition==true){
+				$(".wrap").removeClass( classStr );
+				$(".wrap").addClass( "opening" );
+				$(".wrap").on("transitionend",function(){
+					$(".wrap").removeClass("opening").addClass("opened");
+					console.log('opening transitionend ');
+					vm.option.whenTransition();
+				})
+				this.$ele.find('.btn').text(this.option.button.closeText);
+			}
+			// //btn origin ok
+			// $(".wrap").removeClass( "opened" );
+			// $(".wrap").addClass( "closed" );
+			// $(".img").css("top","-300px");
+			// console.log('this_close',this);
+			// //e.target.textContent=btntext.option.button.openText;	
+			// this.$ele.find('.btn').text(this.option.button.openText);
 		}
 
 		Module.prototype.toggle = function (){
@@ -168,15 +233,6 @@
 			}
 			console.log('toggle done');
 		}
-
-		// Module.prototype.func1 = function (option) {
-		// 	console.log('this is a prototype function1!!!');
-		// 	console.log(option);
-		// };
-
-		// function classStatus(){
-		// 	console.log('this',this);		
-		// }
 			
 		$.fn[ModuleName] = function (options ) {
 			return this.each(function(){
