@@ -44,11 +44,13 @@
 				$(".wrap").toggleClass("opened");
 				$(".wrap").toggleClass("closed");
 				toggleTxt();
+				return {};  //測試
 			}	
 			function autoSlideUD() {
 				$(".wrap").toggleClass("closed");
 				$(".wrap").toggleClass("opened");
 				toggleTxt();
+				return {};  //測試
 			}
 			
 			//openAtStart & autoToggle  
@@ -64,7 +66,7 @@
 				console.log('autoToggle',atToggle);
 
 				if(typeof(atToggle)=="boolean"&&atToggle==true){					
-					setTimeout(autoSlide, 1000);	
+					setTimeout(autoSlide, 1000);										
 				}else if(typeof(atToggle)=="boolean"&&atToggle==false){
 					console.log('atToggle false，沒有自動開合');
 				}else if(typeof(atToggle)=="number"){
@@ -184,7 +186,8 @@
 		Module.prototype.close = function (){
 			var str2=document.getElementsByTagName('a');			
 			var classStr2=str2[0].classList[1];
-			console.log(classStr2);
+			var vm=this;
+			console.log(classStr2,vm);
 			//btn start
 			$(".wrap").removeClass( classStr2 );
 			$(".wrap").addClass( "closed" );
@@ -192,8 +195,8 @@
 			this.$ele.find('.btn').text(this.option.button.openText);
 			//btn end
 
-			if(this.option.openAtStart==true&&classStr=='opened'&&this.option.transition==true){
-				$(".wrap").removeClass( classStr );
+			if(this.option.openAtStart==true&&classStr2=='opened'&&this.option.transition==true){
+				$(".wrap").removeClass( classStr2 );
 				$(".wrap").addClass( "closing" );
 				$(".wrap").on("transitionend",function(){
 					$(".wrap").removeClass("closing").addClass("closed");						
@@ -203,7 +206,7 @@
 				this.$ele.find('.btn').text(this.option.button.openText);
 
 			}else if(this.option.openAtStart==false&&classStr2=='closed'&&this.option.transition==true){
-				$(".wrap").removeClass( classStr );
+				$(".wrap").removeClass( classStr2 );
 				$(".wrap").addClass( "opening" );
 				$(".wrap").on("transitionend",function(){
 					$(".wrap").removeClass("opening").addClass("opened");

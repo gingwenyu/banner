@@ -1,3 +1,7 @@
+body {
+    font-family: Verdana,Arial,\\5FAE\8EDF\6B63\9ED1\9AD4,Microsoft JhengHei,\\5FAE\8EDF\96C5\9ED1\9AD4,Microsoft YaHei;
+    line-height: 1.5;
+}
 .wrap{
     position: relative;
     display: block;
@@ -12,17 +16,28 @@
     /*top:-300px;*/
     left:auto;
     right:auto; 
-}
-.btn{    
-    background-color: black;
-    color:white;
-    text-align: center;
-    font-size:16px;
-    z-index:10;
-    position: absolute;  
-    right:0;
+} 
+
+.btn{
+    font-size: 13px;
+    position: absolute;
     bottom: 0;
+    right: 0;
+    padding: 2px 2px 2px 8px;
+    color: #a3a3a3;
+    /* background-color: #000; */
+    background-color: rgba(0,0,0,.8);
+    border-radius: 3px 0 0 0;
+    /* -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; */
+    user-select: none;
+    cursor: pointer;    
 }
+.btn:hover{
+    color: white;   
+}
+
 .closed{
     overflow: hidden;
     /* width: 1200px; */
@@ -48,4 +63,4 @@
 .closing{       
     transition: height 1s;
     height: 80px;
-}
+} 

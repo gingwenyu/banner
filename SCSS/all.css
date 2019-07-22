@@ -1,0 +1,109 @@
+body {
+  font-family: Verdana,Arial,\\5FAE\8EDF\6B63\9ED1\9AD4,Microsoft JhengHei,\\5FAE\8EDF\96C5\9ED1\9AD4,Microsoft YaHei;
+  line-height: 1.5;
+}
+
+body .wrap {
+  position: relative;
+  display: block;
+  width: 1200px;
+  height: 300px;
+  overflow: hidden;
+}
+
+body .wrap .img {
+  width: 1200px;
+  height: 380px;
+  position: absolute;
+  /*top:-300px;*/
+  left: auto;
+  right: auto;
+}
+
+body .wrap .btn {
+  font-size: 13px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 2px 2px 2px 8px;
+  color: #a3a3a3;
+  /* background-color: #000; */
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 3px 0 0 0;
+  /* -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none; */
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+}
+
+body .wrap .btn:hover {
+  color: white;
+}
+
+body .wrap .btn::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin: 2px;
+  border-style: solid;
+  border-width: 0 3px 3px;
+  border-color: transparent transparent #a3a3a3;
+}
+
+body .closed {
+  overflow: hidden;
+  /* width: 1200px; */
+  height: 80px;
+}
+
+body .closed > img {
+  /* width: 1200px;
+            height: 380px;   */
+  position: absolute;
+  top: -300px;
+  left: auto;
+  right: auto;
+}
+
+body .closed > .btn::after {
+  border-width: 3px 3px 0;
+  border-color: #a3a3a3 transparent transparent;
+}
+
+body .opening {
+  -webkit-transition: height 1s;
+  transition: height 1s;
+  height: 300px;
+}
+
+body .opened {
+  overflow: hidden;
+  /* width: 1200px; */
+  height: 300px;
+}
+
+body .closing {
+  -webkit-transition: height 1s;
+  transition: height 1s;
+  height: 80px;
+}
+
+body .closing > img {
+  /* width: 1200px;
+            height: 380px;   */
+  position: absolute;
+  top: -300px;
+  left: auto;
+  right: auto;
+}
+
+body .closing > .btn::after {
+  border-width: 3px 3px 0;
+  border-color: #a3a3a3 transparent transparent;
+}
+/*# sourceMappingURL=all.css.map */
