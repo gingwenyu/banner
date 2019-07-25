@@ -9,6 +9,8 @@ body .wrap {
   width: 1200px;
   height: 300px;
   overflow: hidden;
+  -webkit-transition: all 1s;
+  transition: all 1s;
 }
 
 body .wrap .img {
@@ -55,6 +57,10 @@ body .wrap .btn::after {
   border-color: transparent transparent #a3a3a3;
 }
 
+body .wrap .btn::after :hover {
+  color: white;
+}
+
 body .closed {
   overflow: hidden;
   /* width: 1200px; */
@@ -64,10 +70,6 @@ body .closed {
 body .closed > img {
   /* width: 1200px;
             height: 380px;   */
-  position: absolute;
-  top: -300px;
-  left: auto;
-  right: auto;
 }
 
 body .closed > .btn::after {
@@ -76,8 +78,6 @@ body .closed > .btn::after {
 }
 
 body .opening {
-  -webkit-transition: height 1s;
-  transition: height 1s;
   height: 300px;
 }
 
@@ -88,18 +88,12 @@ body .opened {
 }
 
 body .closing {
-  -webkit-transition: height 1s;
-  transition: height 1s;
   height: 80px;
 }
 
 body .closing > img {
   /* width: 1200px;
             height: 380px;   */
-  position: absolute;
-  top: -300px;
-  left: auto;
-  right: auto;
 }
 
 body .closing > .btn::after {
