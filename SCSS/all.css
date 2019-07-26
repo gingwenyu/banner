@@ -9,8 +9,8 @@ body .wrap {
   width: 1200px;
   height: 300px;
   overflow: hidden;
-  -webkit-transition: all 1s;
-  transition: all 1s;
+  -webkit-transition: height 1s;
+  transition: height 1s;
 }
 
 body .wrap .img {
@@ -99,5 +99,9 @@ body .closing > img {
 body .closing > .btn::after {
   border-width: 3px 3px 0;
   border-color: #a3a3a3 transparent transparent;
+}
+
+.top {
+  top: -300px;
 }
 /*# sourceMappingURL=all.css.map */

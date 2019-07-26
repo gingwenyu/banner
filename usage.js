@@ -56,34 +56,39 @@
 			// openAtStart
 			 if(typeof(this.option.openAtStart)=="boolean"&&this.option.openAtStart==true){					
 				$(".wrap").addClass( "opened" );
-				console.log(' init add opened');	
+				//console.log(' init add opened');	
 				// vm.open();	
 				// autoToggle();		
 			 }
 			 else if(typeof(this.option.openAtStart)=="boolean"&&this.option.openAtStart==false){				
 				$(".wrap").addClass( "closed" );
-				console.log(' init add closed');			
+				//console.log(' init add closed');			
 				// vm.close();	 
 				// autoToggle();
 			 }
 
 			//autoToggle  testing
-			// function autoToggle(){
-				// if(typeof(vm.option.autoToggle)=="boolean"&&vm.option.autoToggle==true){
-				// 	if($( ".wrap" ).hasClass( "opened" )==true){
-				// 		vm.close();	 
-				// 		console.log('close',vm);
-				// 	}
-				// 	if($( ".wrap" ).hasClass( "closed" )==true){
-				// 		vm.open();	
-				// 		console.log('open',vm);		
-				// 	}
-				// }
-		
+			 //function autoToggle(){
+				if(typeof(vm.option.autoToggle)=="boolean"&&vm.option.autoToggle==true){
+					// if($( ".wrap" ).hasClass( "opened" )){
+					setTimeout(() => {
+						vm.toggle();
+					}, 1000);	
+						// vm.close();	 
+						// console.log('close',vm);
+					// }
+					// if($( ".wrap" ).hasClass( "closed" )){
+						// vm.toggle();
+						// vm.open();	
+						// console.log('open',vm);		
+					// }
+				}
+
 				if(typeof(vm.option.autoToggle)==="number"){
-					if($( ".wrap" ).hasClass( "opened" )==true){
+					if($( ".wrap" ).hasClass( "opened" )){
 						setTimeout(()=>{
-							vm.close(); 
+							vm.toggle();
+							//vm.close(); 
 							//console.log('3000');
 						}, vm.option.autoToggle);
 						//setTimeout(closed, vm.option.autoToggle);	
@@ -91,6 +96,7 @@
 						console.log('close2',vm);	 						
 					}else{
 						setTimeout(()=>{
+							//vm.toggle();
 							vm.open(); 
 							//console.log('3000');
 						}, vm.option.autoToggle);
@@ -103,7 +109,7 @@
 	
 				}
 	
-			// }
+			 //}
 			 
 				// if(typeof(this.option.autoToggle)=="boolean"&&this.option.autoToggle==true){
 				// 	console.log(vm);
@@ -142,39 +148,51 @@
 		};
 	
 		// 設定收合展開按鈕
-		Module.prototype.btn = function () {			
-			var n=document.getElementsByTagName('a');			
+		Module.prototype.btn = function () {					
 			var _banner = this;		
 			$(this.$btn).on("click",function(){
 				
-				if(n[0].classList[1]=="opened"){
+				if($(".wrap").hasClass("opened")){
 					_banner.close();
 				}
-
-				if(n[0].classList[1]=="closed"){
-					_banner.open();				
+				
+				if($(".wrap").hasClass("closed")){
+					_banner.open();	
 				}
+
 			});			
 		};
 				        
 		Module.prototype.open = function (){
 			var classStr=$( ".wrap" ).hasClass( "closed" );
 			var vm=this;
-			
+			$( ".wrap" ).find( ".img" ).removeClass("top");
+			//test
+			var whenTransitionRun = vm.option.whenTransition;
+			//whenTransitionRun();
+			// setInterval(()=>console.log('time'),50);
+			var print =setInterval(function(){
+				whenTransitionRun();
+			},50);
+
 			//btn			
 			if(this.option.transition==true){
 				if(classStr===true){
 					$(".wrap").removeClass( "closed" );
 					$(".wrap").addClass( "opening" );
 				}
-				
+			
 				$(".wrap").on("transitionend",function(){
+					//console.log('hasOpen',$( ".wrap" ).hasClass( "opening" ));
 					if($( ".wrap" ).hasClass( "opening" )){
-						$(".wrap").removeClass("opening").addClass("opened");							
+						$(".wrap").removeClass("opening").addClass("opened");
+						// $( ".wrap" ).find( ".img" ).removeClass("top");							
 					}
-					console.log('opening transitionend');
-					vm.option.whenTransition();
+					//console.log('transitionend add opened');
+					//vm.option.whenTransition();
+					clearInterval(print);
 				});
+
 				this.$ele.find('.btn').text(this.option.button.closeText);
 
 			}else{
@@ -187,11 +205,18 @@
 		}
 
 		Module.prototype.close = function (){
-			//var str2=document.getElementsByTagName('a');
-			var classStr2=$( ".wrap" ).hasClass( "opened" );			
-			//var classStr2=str2[0].classList[1];
+			
+			var classStr2=$( ".wrap" ).hasClass( "opened" );
 			var vm=this;
-			console.log(classStr2,vm);
+
+			//test
+			var whenTransitionRun = vm.option.whenTransition;
+			//whenTransitionRun();
+			// setInterval(()=>console.log('time'),50);
+			var print =setInterval(function(){
+				whenTransitionRun();
+			},50);
+			
 
 			//btn
 			if(this.option.transition==true){
@@ -201,14 +226,25 @@
 				}
 				$(".wrap").on("transitionend",function(){
 					if($( ".wrap" ).hasClass( "closing" )){
-						$(".wrap").removeClass("closing").addClass("closed");	
+						$(".wrap").removeClass("closing").addClass("closed");
 					}				
-					//console.log('closing transitionend1 ');
-					//console.log('456');
-					vm.option.whenTransition();
+				
+					if($( ".wrap" ).hasClass( "closed" )){
+						$( ".wrap" ).find( ".img" ).addClass("top");	
+					}
+					
+					//vm.option.whenTransition();
+					//console.log('transitionend add closed');
+					clearInterval(print);
+					
 				});
 				this.$ele.find('.btn').text(this.option.button.openText);
 				//console.log('close,transition=true');
+				// if(!$( ".wrap" ).find( ".img" ).hasClass("top")){
+				// 	setTimeout(()=>{
+				// 		$( ".wrap" ).find( ".img" ).addClass("top");	
+				// 	},1000)	
+				// }
 
 			}else{
 				$(".wrap").removeClass( "opened" );
@@ -220,22 +256,22 @@
 									
 		}
 
-		// Module.prototype.toggle = function (){
-		// 	var el=document.getElementsByTagName('a');
-		// 	if(el[0].classList[1]=="closed"){
-		// 		$(".wrap").removeClass( "closed" );
-		// 		$(".wrap").addClass( "opened" );	
-		// 		this.$btn[0].textContent=this.option.button.closeText;
-		// 	}else if(el[0].classList[1]=="opened"){
-		// 		$(".wrap").removeClass( "opened" );
-		// 		$(".wrap").addClass( "closed" );	
-		// 		this.$btn[0].textContent=this.option.button.openText;	
-		// 	}
-		// 	//console.log('toggle done');
+		Module.prototype.toggle = function (){
+			if($(".wrap").hasClass("closed")){
+				this.open();
+				// $(".wrap").removeClass( "closed" );
+				// $(".wrap").addClass( "opened" );	
+				// this.$ele.find('.btn').text(this.option.button.closeText);				
+			}else if($(".wrap").hasClass("opened")){
+				this.close();
+				// $(".wrap").removeClass( "opened" );
+				// $(".wrap").addClass( "closed" );
+				// this.$ele.find('.btn').text(this.option.button.openText);	
+			}
 			
-		// }
+		}
 			
-		$.fn[ModuleName] = function (options ) {
+		$.fn[ModuleName] = function (options) {
 			return this.each(function(){
 				var $this = $(this);
 				var module = $this.data( ModuleName );

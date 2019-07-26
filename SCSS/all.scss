@@ -8,8 +8,7 @@ body {
         width: 1200px;
         height: 300px;
         overflow: hidden;
-        transition: all 1s;
-
+        transition: height 1s;
         .img{
             width: 1200px;
             height: 380px;  
@@ -100,4 +99,7 @@ body {
         }
     } 
 
+}
+.top{
+    top: -300px;
 }
